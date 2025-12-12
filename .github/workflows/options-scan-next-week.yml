@@ -1,4 +1,4 @@
-name: Daily Options Scan
+name: Daily Options Scan Next week
 
 on:
   schedule:
@@ -32,7 +32,7 @@ jobs:
 
       - name: Run unusual options scanner
         run: |
-          python scanner/unusual_options_scan.py
+          python scanner/unusual_options_scan_nw.py
 
       - name: Upload scan results artifact
         uses: actions/upload-artifact@v4

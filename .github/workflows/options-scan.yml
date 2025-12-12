@@ -2,7 +2,7 @@ name: Daily Options Scan
 
 on:
   schedule:
-    - cron: "45 5 * * 1-5"   # adjust time as needed
+    - cron: "53 5 * * 1-5"   # adjust time as needed
   workflow_dispatch:
 
 jobs:
@@ -50,7 +50,7 @@ jobs:
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: "Daily Options Scan Results - ${{ env.TODAY }}"
-          to: ${{ secrets.RECIPIENT_EMAIL }}
+          to: atulbalaji318@gmail.com, atulapra@gmail.com
           from: "Options Scanner <${{ secrets.SMTP_USERNAME }}>"
           secure: false
           attachments: |

@@ -1,0 +1,67 @@
+name: Daily Options Scan
+
+on:
+  schedule:
+    - cron: "35 5 * * 1-5"   # adjust time as needed
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set today's date
+        id: date
+        run: echo "today=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Set TODAY env
+        run: echo "TODAY=${{ steps.date.outputs.today }}" >> $GITHUB_ENV
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run unusual options scanner
+        run: |
+          python scanner/unusual_options_scan.py
+
+      - name: Upload scan results artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: options-scan-results-${{ env.TODAY }}
+          path: |
+            unusual_options_scan_${{ env.TODAY }}*.csv
+            unusual_options_scan_${{ env.TODAY }}*_summary.csv
+
+      - name: Send email with today's scan results
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "Daily Options Scan Results - ${{ env.TODAY }}"
+          to: ${{ secrets.RECIPIENT_EMAIL }}
+          from: "Options Scanner <${{ secrets.SMTP_USERNAME }}>"
+          secure: true
+          content_type: text/html
+          attachments: |
+            unusual_options_scan_${{ env.TODAY }}*_summary.csv
+            unusual_options_scan_${{ env.TODAY }}*.csv
+          body: |
+            <p>Your daily options scan for <b>${{ env.TODAY }}</b> is complete.</p>
+            <p>Attached files:</p>
+            <ul>
+              <li><b>Summary CSV</b></li>
+              <li><b>Detailed CSV</b></li>
+            </ul>
+            <p>These results include strike ranges, call/put flows, and 1w/2w OI trends.</p>

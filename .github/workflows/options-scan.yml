@@ -53,15 +53,14 @@ jobs:
           to: ${{ secrets.RECIPIENT_EMAIL }}
           from: "Options Scanner <${{ secrets.SMTP_USERNAME }}>"
           secure: true
-          content_type: text/html
           attachments: |
             unusual_options_scan_${{ env.TODAY }}*_summary.csv
             unusual_options_scan_${{ env.TODAY }}*.csv
-          body: |
+          html_body: |
             <p>Your daily options scan for <b>${{ env.TODAY }}</b> is complete.</p>
             <p>Attached files:</p>
             <ul>
-              <li><b>Summary CSV</b></li>
-              <li><b>Detailed CSV</b></li>
+              <li><b>Summary CSV</b> (per-ticker call/put ranges, flows, OI trends)</li>
+              <li><b>Detailed CSV</b> (contract-level data with volume, vol/OI, trends)</li>
             </ul>
-            <p>These results include strike ranges, call/put flows, and 1w/2w OI trends.</p>
+            <p>These include only today's results.</p>

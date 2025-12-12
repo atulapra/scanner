@@ -2,7 +2,7 @@ name: Daily Options Scan
 
 on:
   schedule:
-    - cron: "*/5 * * * *"  # adjust time as needed
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:

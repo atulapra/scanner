@@ -52,7 +52,7 @@ jobs:
           subject: "Daily Options Scan Results - ${{ env.TODAY }}"
           to: ${{ secrets.RECIPIENT_EMAIL }}
           from: "Options Scanner <${{ secrets.SMTP_USERNAME }}>"
-          secure: true
+          secure: false
           attachments: |
             unusual_options_scan_${{ env.TODAY }}*_summary.csv
             unusual_options_scan_${{ env.TODAY }}*.csv

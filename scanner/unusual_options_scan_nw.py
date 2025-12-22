@@ -12,7 +12,7 @@ LAST_PRICE_MAX = 1.5
 VOL_MIN = 300
 VOL_OI_MIN = 2.0
 
-START_DATE_CUTOFF = "2024-12-16"
+START_DATE_CUTOFF = "2024-12-29"
 END_DATE_CUTOFF   = "2026-01-31"
 
 HISTORY_LOOKBACK_DAYS = 14   # how far back to look for vol/OI trends
@@ -359,6 +359,13 @@ def build_ticker_summary(df: pd.DataFrame) -> pd.DataFrame:
 
     # Sort: most active tickers first
     pivoted = pivoted.sort_values("total_volume", ascending=False)
+
+    # Sort by call_put_vol_ratio (highest → lowest)
+    pivoted = pivoted.sort_values(
+        "call_put_vol_ratio",
+        ascending=False,
+        na_position="last"
+    )
 
     # Reorder columns into a nice human-readable layout
     cols = [

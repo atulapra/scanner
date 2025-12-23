@@ -61,7 +61,7 @@ NASDAQ100 = [
     "ROKU","RH","FCX","DASH","CHWY","CCJ","FI","TEAM","SBET","METC","AVAV",
     "MTSR","NTLA","ALAB","ALK","PINS","TEM","AZN","CE","WWW","TREX","LVS",
     "SNDK","BBAI","NNN","QURE","LENZ","A","SYM","KSS","EXEL","MDB", "CFLT", "MSTR", 
-    "GEV", "SATS", "NVO", "ASTS", "WVE", "IONQ", "KTOS", "SERV"
+    "GEV", "SATS", "NVO", "ASTS", "WVE", "IONQ", "KTOS", "SERV", "IREN"
 ]
 
 TICKERS = sorted(list(dict.fromkeys(NASDAQ100)))  # Deduplicate
@@ -360,6 +360,13 @@ def build_ticker_summary(df: pd.DataFrame) -> pd.DataFrame:
 
     # Sort: most active tickers first
     pivoted = pivoted.sort_values("total_volume", ascending=False)
+
+    # Sort by call_put_vol_ratio (highest → lowest)
+    pivoted = pivoted.sort_values(
+        "call_put_vol_ratio",
+        ascending=False,
+        na_position="last"
+    )
 
     # Reorder columns into a nice human-readable layout
     cols = [

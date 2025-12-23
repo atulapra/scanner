@@ -60,7 +60,8 @@ NASDAQ100 = [
     "USAR","ONON","VIX","OKLO","QS","CRML","MP","QBTS","JEF","GKOS","GSK","AMGN",
     "ROKU","RH","FCX","DASH","CHWY","CCJ","FI","TEAM","SBET","METC","AVAV",
     "MTSR","NTLA","ALAB","ALK","PINS","TEM","AZN","CE","WWW","TREX","LVS",
-    "SNDK","BBAI","NNN","QURE","LENZ","A","SYM","KSS","EXEL","MDB", "CFLT", "MSTR", "GEV", "SATS"
+    "SNDK","BBAI","NNN","QURE","LENZ","A","SYM","KSS","EXEL","MDB", "CFLT", "MSTR", 
+    "GEV", "SATS", "NVO", "ASTS", "WVE", "IONQ", "KTOS", "SERV"
 ]
 
 TICKERS = sorted(list(dict.fromkeys(NASDAQ100)))  # Deduplicate

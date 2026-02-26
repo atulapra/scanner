@@ -12,8 +12,8 @@ LAST_PRICE_MAX = 1.5
 VOL_MIN = 300
 VOL_OI_MIN = 2.0
 
-START_DATE_CUTOFF = "2024-12-22"
-END_DATE_CUTOFF   = "2026-01-31"
+START_DATE_CUTOFF = "2026-01-30"
+END_DATE_CUTOFF   = "2026-05-31"
 
 HISTORY_LOOKBACK_DAYS = 14   # how far back to look for vol/OI trends
 HISTORY_1W_DAYS       = 7    # "1 week" window
@@ -60,9 +60,7 @@ NASDAQ100 = [
     "USAR","ONON","VIX","OKLO","QS","CRML","MP","QBTS","JEF","GKOS","GSK","AMGN",
     "ROKU","RH","FCX","DASH","CHWY","CCJ","FI","TEAM","SBET","METC","AVAV",
     "MTSR","NTLA","ALAB","ALK","PINS","TEM","AZN","CE","WWW","TREX","LVS",
-    "SNDK","BBAI","NNN","QURE","LENZ","A","SYM","KSS","EXEL","MDB", "CFLT", "MSTR", 
-    "GEV", "SATS", "NVO", "ASTS", "WVE", "IONQ", "KTOS", "SERV", "IREN", "NBIS", "MDLN",
-    "SILC", "CEVA", "VICR", "BELFB", "HMFX", "NVTS", "AEHR", "SSYS", "RBLX"
+    "SNDK","BBAI","NNN","QURE","LENZ","A","SYM","KSS","EXEL","MDB", "CFLT", "MSTR", "GEV", "SATS", "CRCL"
 ]
 
 TICKERS = sorted(list(dict.fromkeys(NASDAQ100)))  # Deduplicate
@@ -359,10 +357,7 @@ def build_ticker_summary(df: pd.DataFrame) -> pd.DataFrame:
         np.nan,
     )
 
-    # Sort: most active tickers first
-    pivoted = pivoted.sort_values("total_volume", ascending=False)
-
-    # Sort by call_put_vol_ratio (highest → lowest)
+    # 🔽 Sort by call_put_vol_ratio (highest → lowest)
     pivoted = pivoted.sort_values(
         "call_put_vol_ratio",
         ascending=False,
@@ -431,7 +426,7 @@ def main():
     print(f"Saved {len(summary)} ticker summaries → {SUMMARY_CSV}")
 
     # Print a small sample to console so you can quickly read direction
-    print("\n=== Top 25 tickers by total volume (summary) ===")
+    print("\n=== Top 25 tickers by call/put volume ratio (summary) ===")
     print(summary.head(25).to_string(index=False))
 
     # Optional: old-style top 10 by score
